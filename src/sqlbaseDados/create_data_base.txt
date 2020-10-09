@@ -1,0 +1,17 @@
+CREATE ROLE caixaki LOGIN
+  ENCRYPTED PASSWORD 'md5cec5c8c10a1c520d5c242c10560eaf0e'
+  SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;
+
+
+CREATE DATABASE caixaki
+  WITH OWNER = caixaki
+       ENCODING = 'UTF8'
+       TABLESPACE = pg_default
+       LC_COLLATE = 'pt_BR.UTF-8'
+       LC_CTYPE = 'pt_BR.UTF-8'
+       CONNECTION LIMIT = -1;
+       
+
+
+--username="caixaki" 
+--password="admin" 

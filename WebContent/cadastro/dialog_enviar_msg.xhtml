@@ -1,0 +1,260 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:util="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+<h:form id="formCadastroMsgDialog" prependId="false">
+	<c:set var="isCadastro" value="true" scope="view" />
+	<p:panel header="Cadastro de Menssagem" id="panelCadastroMsgDialog">
+
+		<p:panelGrid id="gridMsgMsgDialog" columns="3">
+			<p:column>
+				<p:row>
+					<h:outputLabel for="idMsgDialog" value="Código : "
+						id="labelIdMsgDialog" style="width:300px;" />
+				</p:row>
+			</p:column>
+			<p:column>
+				<p:row>
+					<p:inputText id="idMsgDialog" styleClass="estiloIdCastro"
+						value="#{mensagemBeanView.objetoSelecionado.men_codigo}"
+						readonly="true" />
+				</p:row>
+			</p:column>
+			<p:column />
+
+
+			<p:column>
+				<p:row>
+					<h:outputLabel for="usr_origemMsgDialog" value="Origem : "
+						id="labelOrigemMsgDialog" />
+				</p:row>
+			</p:column>
+			<p:column>
+				<p:row>
+					<p:inputText id="usr_origemMsgDialog" styleClass="estiloIdCastro"
+						value="#{mensagemBeanView.objetoSelecionado.usr_origem.ent_codigo}"
+						readonly="true" immediate="true" required="true" />
+					<p:outputLabel style="margin-left: 1px;" />
+					<p:inputText id="loginOrigemMsgDialog" readonly="true"
+						immediate="true"
+						value="#{mensagemBeanView.objetoSelecionado.usr_origem.ent_login}"
+						required="true" style="width: 376px;" />
+				</p:row>
+			</p:column>
+			<p:column>
+				<p:row>
+					<p:message for="loginOrigemMsgDialog" />
+				</p:row>
+			</p:column>
+
+
+			<p:column>
+				<p:row>
+					<h:outputLabel for="usr_destinoMsgDialog" value="Destino : "
+						id="labelDestinoMsgDialog" />
+				</p:row>
+			</p:column>
+			<p:column>
+				<p:row>
+					<p:inputText id="usr_destinoMsgDialog" styleClass="estiloIdCastro"
+						onblur="pesquisarUserDestinoPerderFocoDialog(this.value);addDestinoMsg(this.value);"
+						value="#{mensagemBeanView.objetoSelecionado.usr_destino.ent_codigo}"
+						immediate="false" required="true"
+						requiredMessage="Informe o destino." />
+					<p:commandButton id="buttonPesquisaDestinoMsgDialog"
+						icon="imgPesquisa" ajax="true" immediate="true"
+						actionListener="#{funcionarioBeanView.setarVariaveisNulas}"
+						oncomplete="destinoDialogMsgDialog.show();"
+						styleClass="buttonPesquisa" />
+					<p:inputText id="loginDestinoMsgDialog" readonly="true"
+						immediate="true"
+						value="#{mensagemBeanView.objetoSelecionado.usr_destino.ent_login}"
+						required="true" requiredMessage="Informe o usuário de destino."
+						style="width: 350px;" />
+				</p:row>
+			</p:column>
+			<p:column>
+				<p:row>
+					<p:message for="usr_destinoMsgDialog" />
+				</p:row>
+			</p:column>
+
+
+
+			<c:choose>
+				<c:when test="${isCadastro == false}">
+					<p:column>
+						<p:row>
+							<h:outputLabel for="men_lido" value="Lido : "
+								id="labelLidoMsgDialog" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:selectBooleanCheckbox id="men_lidoMsgDialog"
+								value="#{mensagemBeanView.objetoSelecionado.men_lido}" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="men_exigirrespostaMsgDialog" />
+						</p:row>
+					</p:column>
+				</c:when>
+			</c:choose>
+
+
+			<p:column>
+				<p:row>
+					<h:outputLabel for="men_exigirrespostaMsgDialog"
+						value="Exige resposta : " id="labelExigeRespMsgDialog" />
+				</p:row>
+			</p:column>
+			<p:column>
+				<p:row>
+					<p:selectBooleanCheckbox id="men_exigirrespostaMsgDialog"
+						value="#{mensagemBeanView.objetoSelecionado.men_exigirresposta}" />
+				</p:row>
+			</p:column>
+			<p:column>
+				<p:row>
+					<p:message for="men_exigirrespostaMsgDialog" />
+				</p:row>
+			</p:column>
+
+
+			<p:column>
+				<p:row>
+					<h:outputLabel for="men_datahoraMsgDialog" value="Data envio : "
+						id="labelDataMsgDialog" />
+				</p:row>
+			</p:column>
+
+			<p:column>
+				<p:row>
+					<p:inputText
+						value="#{mensagemBeanView.objetoSelecionado.men_datahora}"
+						id="men_datahoraMsgDialog" readonly="true">
+						<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss"
+							dateStyle="long" timeStyle="full" timeZone="GMT-03:00" />
+					</p:inputText>
+				</p:row>
+			</p:column>
+			<p:column>
+				<p:row>
+					<p:message for="men_datahoraMsgDialog" />
+				</p:row>
+			</p:column>
+
+
+
+			<p:column>
+				<p:row>
+					<h:outputLabel for="men_assuntoMsgDialog" value="Assunto : "
+						id="labelAssMsgDialog" />
+				</p:row>
+			</p:column>
+
+			<p:column>
+				<p:row>
+					<p:column>
+						<p:row>
+							<p:inputText id="men_assuntoMsgDialog" style="width:502px;"
+								value="#{mensagemBeanView.objetoSelecionado.men_assunto}"
+								immediate="false" required="true" maxlength="80"
+								requiredMessage="Informe o assunto."/>
+						</p:row>
+					</p:column>
+				</p:row>
+			</p:column>
+			<p:column>
+				<p:row>
+					<p:message for="men_assuntoMsgDialog" />
+				</p:row>
+			</p:column>
+
+
+
+
+
+			<p:column>
+				<p:row>
+					<h:outputLabel for="men_mensagemMsgDialog" value="Mensagem : "
+						id="labelMsgMsgDialog" />
+				</p:row>
+			</p:column>
+
+			<p:column>
+				<p:row>
+					<p:column>
+						<p:row>
+							<p:inputTextarea id="men_mensagemMsgDialog"
+								style="height:110px;width:502px;" autoResize="true"
+								value="#{mensagemBeanView.objetoSelecionado.men_mensagem}"
+								immediate="false" required="true" maxlength="500"
+								requiredMessage="Informe a mensagem." />
+						</p:row>
+					</p:column>
+				</p:row>
+			</p:column>
+			<p:column>
+				<p:row>
+					<p:message for="men_mensagemMsgDialog" />
+				</p:row>
+			</p:column>
+
+		</p:panelGrid>
+
+	</p:panel>
+
+	<div class="espacoBranco" />
+
+	<p:commandButton value="Novo"
+		style="height:40px;width:100px;background:#CDCDC1;border: 1px solid #FFFFFF;"
+		rendered="#{contextoBean.possuiAcesso('MENSAGENS_ENVIAR_NOVO', 'ADMIN')}"
+		actionListener="#{mensagemBeanView.novo}" ajax="true" id="buttonNovo"
+		immediate="false" update="formCadastroMsgDialog, :formTemplate:msg">
+		<p:ajax listener="#{mensagemBeanView.novo}"/>
+	</p:commandButton>
+
+	<p:commandButton value="Salvar"
+		style="height:40px;width:100px;background:#CDCDC1;border: 1px solid #FFFFFF;"
+		rendered="#{contextoBean.possuiAcesso('MENSAGENS_ENVIAR_NOVO', 'ADMIN') and mensagemBeanView.objetoSelecionado.men_codigo == null}"
+		actionListener="#{mensagemBeanView.saveNotReturn}" ajax="true"
+		partialSubmit="true" process="@this, @form" id="buttonSalvarDialogAlteraSenha"
+		immediate="false" update="formCadastroMsgDialog, :formTemplate:msg">
+	</p:commandButton>
+
+	<p:commandButton value="Cancelar"
+		style="height:40px;width:100px;background:#CDCDC1;border: 1px solid #FFFFFF;"
+		actionListener="#{mensagemBeanView.novo}" ajax="true"
+		id="buttonConsultarDiEnMsg" immediate="true"
+		onclick="enviarMsgDialog.hide();">
+	</p:commandButton>
+
+	<script type="text/javascript" charset="UTF-8">
+	
+		addFocoAoCampo('usr_destinoMsgDialog');
+		permitirApenasNumero('usr_destinoMsgDialog');
+
+		gerenciaTeclaEnter();
+	</script>
+
+
+	<p:dialog widgetVar="destinoDialogMsgDialog" 
+		id="destinoDialogMsgDialog" width="1000" modal="false"
+		resizable="false" height="400" header="Consulta usuário destino"
+		appendToBody="false" dynamic="true">
+		<util:pesquisa managedBeanView="#{funcionarioBeanView}"
+			nomePesquisa="Pesquisa de usuário"
+			colunasGridDataTableList="/resources/components/colunasDataTableFuncionario.xhtml"
+			exibirBotaoAdd="true" ocultaNovo="true"
+			funcaoJavaScript="destinoDialogMsgDialog.hide(),addDestinoSelecionadoMsgDialog('#{objeto.json}')">
+		</util:pesquisa>
+	</p:dialog>
+</h:form>
+</html>

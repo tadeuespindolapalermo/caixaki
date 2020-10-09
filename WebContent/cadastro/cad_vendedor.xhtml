@@ -1,0 +1,639 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:util="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/templatePrincipal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formCadastro" prependId="false">
+		 <c:set var="isCadastro" value="true" scope="view"/>
+		  	
+			<p:panel header="Cadastro de Vendedor" id="panelCadastro">
+				
+				<p:panelGrid id="gridEntidade" columns="3">
+					<p:column>
+						<p:row>
+							<h:outputLabel for="id" value="Código : " id="labelId"
+								style="width:300px;" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="id" styleClass="estiloIdCastro"
+								value="#{entidadeBeanView.objetoSelecionado.ent_codigo}"
+								readonly="true" />
+						</p:row>
+						
+						
+						<p:row>
+							<h:outputLabel for="ent_datacadastro" value="Data do cadastro : "
+								id="labelDataCadastro" style="padding-left: 20px;" />
+						</p:row>
+						<p:row>
+							<p:inputText id="ent_datacadastro" readonly="true"
+								value="#{entidadeBeanView.objetoSelecionado.ent_datacadastro}">
+								<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss"
+									dateStyle="long" timeStyle="full" timeZone="GMT-03:00" />
+							</p:inputText>
+						</p:row>
+						
+						
+					</p:column>
+					<p:column />
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_tipopessoa" id="labelTipoPessoa"
+								value="Tipo pessoa * : " />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:selectOneMenu id="ent_tipopessoa" style="width:123px;"
+								value="#{entidadeBeanView.objetoSelecionado.ent_tipopessoa}"
+								onchange="ocultaDataNacimento(this.value);"
+								required="true" requiredMessage="Informe o campo tipo pessoa.">
+								<f:selectItems value="#{entidadeBeanView.listTipoPessoa}" />
+							</p:selectOneMenu>
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_tipopessoa" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_nomefantasia" id="labelNomeFantasia"
+								value="Nome fantasia * : " />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="ent_nomefantasia"
+								value="#{entidadeBeanView.objetoSelecionado.ent_nomefantasia}"
+								required="true" requiredMessage="Informe o campo nome fantasia."
+								maxlength="100" styleClass="estyleInputName"  onblur="copiarValorFantasiaRazao(this);"/>
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_nomefantasia" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_razao" id="labelRazaoSocial"
+								value="Razão social : " />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="ent_razao"
+								value="#{entidadeBeanView.objetoSelecionado.ent_razao}"
+								required="false"
+								requiredMessage="Informe o campo nome razão social."
+								maxlength="100" styleClass="estyleInputName" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_razao" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_endereco" id="labelEndereco"
+								value="Endereço : " />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="ent_endereco"
+								value="#{entidadeBeanView.objetoSelecionado.ent_endereco}"
+								required="false" requiredMessage="Informe o campo endereço."
+								maxlength="100" styleClass="estyleInputName" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_endereco" />
+						</p:row>
+					</p:column>
+
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_complemento" id="labelComplemento"
+								value="Complemento : " />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="ent_complemento"
+								value="#{entidadeBeanView.objetoSelecionado.ent_complemento}"
+								required="false" requiredMessage="Informe o campo complemento."
+								maxlength="50" styleClass="estyleInputName" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_complemento" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_cep" id="labelEnt_cep" value="CEP : " />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputMask id="ent_cep" mask="99999-999"
+								value="#{entidadeBeanView.objetoSelecionado.ent_cep}"
+								required="false" requiredMessage="Informe o campo cep."
+								maxlength="100" styleClass="estiloIdCastro" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_cep" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_fone" id="labelEnt_fone"
+								value="Telefone : " />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputMask id="ent_fone" mask="(99)9999-9999"
+								value="#{entidadeBeanView.objetoSelecionado.ent_fone}"
+								required="false" requiredMessage="Informe o campo telefone."
+								maxlength="100" styleClass="estiloIdCastro" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_fone" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_fax" id="labelEnt_fax" value="Fax : " />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputMask id="ent_fax" mask="(99)9999-9999"
+								value="#{entidadeBeanView.objetoSelecionado.ent_fax}"
+								required="false" requiredMessage="Informe o campo fax."
+								maxlength="100" styleClass="estiloIdCastro" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_fax" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_celular" id="labelEnt_celular"
+								value="Celular : " />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputMask id="ent_celular" mask="(99)9999-9999"
+								value="#{entidadeBeanView.objetoSelecionado.ent_celular}"
+								required="false" requiredMessage="Informe o campo celular."
+								maxlength="100" styleClass="estiloIdCastro" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_celular" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_contato" id="labelContato"
+								value="Contato : " />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="ent_contato"
+								value="#{entidadeBeanView.objetoSelecionado.ent_contato}"
+								required="false" requiredMessage="Informe o campo contato."
+								maxlength="80" styleClass="estyleInputName" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_contato" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_emailcontato" id="labelEmailContato"
+								value="E-mail contato : " />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="ent_emailcontato"
+								value="#{entidadeBeanView.objetoSelecionado.ent_emailcontato}"
+								required="false"
+								requiredMessage="Informe o campo e-mail contato."
+								maxlength="100" styleClass="estyleInputName">
+								<f:validateRegex pattern="[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\.]+" />
+							</p:inputText>
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_emailcontato" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_email" id="labelEmail" value="E-mail : " />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="ent_email"
+								value="#{entidadeBeanView.objetoSelecionado.ent_email}"
+								required="false" requiredMessage="Informe o campo e-mail"
+								maxlength="100" styleClass="estyleInputName">
+								<f:validateRegex pattern="[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\.]+" />
+							</p:inputText>
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_email" />
+						</p:row>
+					</p:column>
+					
+					<sec:ifAnyGranted roles="OCULTA_ITEM">	
+						<p:column>
+							<p:row>
+								<h:outputLabel for="ent_emailmovimento" id="labelEmailMovimento"
+									value="E-mail movimento: " />
+							</p:row>
+						</p:column>
+						<p:column>
+							<p:row>
+								<p:inputText id="ent_emailmovimento"
+									value="#{entidadeBeanView.objetoSelecionado.ent_emailmovimento}"
+									required="false"
+									requiredMessage="Informe o campo e-mail movimento"
+									maxlength="100" styleClass="estyleInputName">
+									<f:validateRegex pattern="[a-zA-Z0-9\-\_\.]+@[a-zA-Z0-9\-\_\.]+" />
+								</p:inputText>
+							</p:row>
+						</p:column>
+						<p:column>
+							<p:row>
+								<p:message for="ent_emailmovimento" />
+							</p:row>
+						</p:column>
+					</sec:ifAnyGranted>
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="cid_codigo" value="Cidade : "
+								id="labelIdCidade" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="cid_codigo" styleClass="estiloIdCastro"
+								onblur="pesquisarCidadePerderFoco(this.value);addCidadeEntidade(this.value);"
+								value="#{entidadeBeanView.objetoSelecionado.cid_codigo}"
+								maxlength="12"
+								immediate="false" required="true"
+								requiredMessage="Informe a cidade." />
+							<p:commandButton id="buttonPesquisaCidadel" icon="imgPesquisa"
+								ajax="true" immediate="false"
+								actionListener="#{cidadeBeanView.setarVariaveisNulas}"
+								oncomplete="cidadeDialog.show();"
+								update=":formTemplate:cidadeDialog"									
+								styleClass="buttonPesquisa" process="@this" />
+							<p:inputText id="cid_descricao" readonly="true" immediate="false"
+								value="#{entidadeBeanView.objetoSelecionado.cid_codigo.cid_descricao}"
+								required="true" requiredMessage="Informe o campo cidade."
+								style="width: 350px;" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="cid_codigo" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="bai_codigo" value="Bairro : "
+								id="labelIdBairro" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="bai_codigo" styleClass="estiloIdCastro"
+								onblur="pesquisarBairroPerderFoco(this.value);addBairroEntidade(this.value);"
+								value="#{entidadeBeanView.objetoSelecionado.bai_codigo}"
+								immediate="false" required="true"
+								requiredMessage="Informe o bairro." />
+							<p:commandButton id="buttonPesquisaBairro" icon="imgPesquisa"
+								ajax="true" immediate="false" 
+								actionListener="#{bairroBeanView.setarVariaveisNulas}"
+								oncomplete="bairroDialog.show();"
+								update=":formTemplate:bairroDialog"										
+								process="@this" styleClass="buttonPesquisa" />
+							<p:inputText id="bai_descricao" readonly="true" immediate="false"
+								value="#{entidadeBeanView.objetoSelecionado.bai_codigo.bai_descricao}"
+								required="true" requiredMessage="Informe o campo bairro."
+								style="width: 350px;" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="bai_codigo" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="fil_codigo" value="Filial : "
+								id="labelFilial" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="fil_codigo" styleClass="estiloIdCastro"
+								onblur="pesquisarFilialPerderFoco(this.value);addFilialEntidade(this.value);"
+								value="#{entidadeBeanView.objetoSelecionado.fil_codigo}"
+								immediate="true" required="false"
+								requiredMessage="Informe a filial." />
+							<p:commandButton id="buttonPesquisaFilial" icon="imgPesquisa"
+								ajax="true" immediate="false" 
+								actionListener="#{filialBeanView.setarVariaveisNulas}"
+								oncomplete="filialDialog.show();"
+								update=":formTemplate:filialDialog"									
+								process="@this" styleClass="buttonPesquisa" />
+							<p:inputText id="fil_descricao" readonly="true" immediate="true"
+								value="#{entidadeBeanView.objetoSelecionado.fil_codigo.fil_descricao}"
+								required="false" requiredMessage="Informe o campo filial."
+								style="width: 350px;" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="fil_codigo" />
+						</p:row>
+					</p:column>
+					
+					
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_codconstrutora" value="Construtora * : " id="labelEmp" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="ent_codigo" styleClass="estiloIdCastro"
+								onblur="pesquisarConstrutoraPerderFoco2(this.value);"
+								value="#{entidadeBeanView.associacaoText}"
+								immediate="false" required="false"
+								requiredMessage="Informe a construtora." />
+							<p:commandButton id="buttonPesquisaConstrutora" icon="imgPesquisa"
+								ajax="true" immediate="false" 
+								actionListener="#{construtoraBeanView.setarVariaveisNulas}"
+								oncomplete="construtoraDialog.show();"
+								update=":formTemplate:construtoraDialog"
+								process="@this" styleClass="buttonPesquisa" />
+							<p:inputText id="descricaoConstrutora" readonly="true" immediate="false"
+								value="#{entidadeBeanView.associacaoTextDescricao}"
+								required="false" requiredMessage="Informe a construtora."
+								style="width: 350px;" />
+						</p:row>
+					</p:column>
+					<p:column > 
+						<p:row>
+							<p:message for="descricaoConstrutora" />
+						</p:row>
+					</p:column>
+					
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_observacao" value="Observação : "
+								id="labelObs" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputTextarea id="ent_observacao" autoResize="true"
+								style="height:70px;width:502px;"
+								value="#{entidadeBeanView.objetoSelecionado.ent_observacao}"
+								immediate="true" required="false" maxlength="250"
+								requiredMessage="Informe a observação." />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_observacao" />
+						</p:row>
+					</p:column>
+
+
+
+					<p:column rendered="#{entidadeBeanView.objetoSelecionado.ent_codigo != null}">
+						<p:row>
+							<h:outputLabel for="ent_inativo" value="Inativo : "
+								id="labelInativo" />
+						</p:row>
+					</p:column>
+					<p:column rendered="#{entidadeBeanView.objetoSelecionado.ent_codigo != null}">
+						<p:row>
+							<p:selectBooleanCheckbox id="ent_inativo"
+								value="#{entidadeBeanView.objetoSelecionado.ent_inativo}" />
+						</p:row>
+					</p:column>
+					<p:column rendered="#{entidadeBeanView.objetoSelecionado.ent_codigo != null}">
+						<p:row>
+							<p:message for="ent_inativo" />
+						</p:row>
+					</p:column>
+
+
+					<p:column id="collabelDataNasc">
+						<p:row>
+							<h:outputLabel for="ent_datanascimento"
+								value="Data de nascimento : " id="labelDataNasc" />
+						</p:row>
+					</p:column>
+					<p:column id="colent_datanascimento">
+						<p:row>
+							<p:calendar locale="pt" showButtonPanel="true" showOn="button"
+								styleClass="calendar" pattern="dd/MM/yyyy" readonlyInput="true"
+								navigator="true" id="ent_datanascimento"
+								value="#{entidadeBeanView.objetoSelecionado.ent_datanascimento}" />
+						</p:row>
+					</p:column>
+					<p:column id="colmsgent_datanascimento"> 
+						<p:row>
+							<p:message for="ent_datanascimento" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_ultimoacesso" value="Ultimo acesso : "
+								id="labelUltimoAcesso" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="ent_ultimoacesso" readonly="true"
+								value="#{entidadeBeanView.objetoSelecionado.ent_ultimoacesso}">
+								<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss"
+									dateStyle="long" timeStyle="full" timeZone="GMT-03:00" />
+							</p:inputText>
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_ultimoacesso" />
+						</p:row>
+					</p:column>
+				</p:panelGrid>
+
+			</p:panel>
+
+			<div class="espacoBranco" />
+
+			<util:botoesCrud managedBeanView="#{entidadeBeanView}"
+				camposReload=":formTemplate:msg, tableResult"
+				tipoEntidadeTemp="TIPO_CADASTRO_VENDEDOR"
+				botaoNovo = "#{contextoBean.possuiAcesso('VENDEDOR_NOVO', 'ADMIN')}"
+				botaoSalvar = "#{contextoBean.possuiAcesso('VENDEDOR_NOVO', 'ADMIN') and entidadeBeanView.objetoSelecionado.ent_codigo == null}"
+				botaoAtualizar = "#{contextoBean.possuiAcesso('VENDEDOR_EDITAR', 'ADMIN') and entidadeBeanView.objetoSelecionado.ent_codigo != null}"
+				botaoExcluir = "#{contextoBean.possuiAcesso('VENDEDOR_EXCLUIR', 'ADMIN')}"/>	 				
+		</h:form>
+
+		<script type="text/javascript" charset="UTF-8">
+			addFocoAoCampo('ent_nomefantasia');
+			var id = getValorElementPorIdJQuery('cid_codigo');
+			$(id).keypress(permitNumber);
+			id = getValorElementPorIdJQuery('bai_codigo');
+			$(id).keypress(permitNumber);
+			id = getValorElementPorIdJQuery('fil_codigo');
+			$(id).keypress(permitNumber);
+			
+			gerenciaTeclaEnter();
+			
+			$(document).ready(function() {
+				ocultaDataNacimento($(getValorElementPorIdJQuery('ent_tipopessoa')).val()); 
+			});
+		</script>
+
+		<div class="espacoBranco" />
+
+		<p:dataTable id="tableResult" value="#{entidadeBeanView.list}" rendered="#{entidadeBeanView.list.list.size() > 0}"
+			var="objeto" rows="10" paginatorPosition="bottom" paginator="true"
+			emptyMessage="Não existem valores para exibição." lazy="true"
+			paginatorTemplate=" {FirstPageLink}
+								   {PreviousPageLink} {PageLinks} 
+	 							   {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+			<ui:include
+				src="/resources/components/colunasDataTableEntidade.xhtml" />
+
+		</p:dataTable>
+
+
+	   <p:dialog widgetVar="construtoraDialog" id="construtoraDialog" width="1000" 
+			modal="true" resizable="false" height="400"
+			header="Consulta construtora" appendToBody="false" dynamic="true">
+			<util:pesquisa managedBeanView="#{construtoraBeanView}"
+				nomePesquisa="Pesquisa de contrutora."
+				colunasGridDataTableList="/resources/components/colunasDataTableEntidade.xhtml"
+				exibirBotaoAdd="true" ocultaNovo="true"
+				funcaoJavaScript="construtoraDialog.hide(), addContrutoraSelecionadoVendedor2('#{objeto.json}')">
+			</util:pesquisa>
+		</p:dialog>
+
+
+		<p:dialog widgetVar="filialDialog" id="filialDialog" width="1000"
+			modal="true" resizable="false" height="400"
+			header="Consulta de filial" appendToBody="false" dynamic="true">
+			<util:pesquisa managedBeanView="#{filialBeanView}"
+				nomePesquisa="Pesquisa de filial"
+				colunasGridDataTableList="/resources/components/colunasDataTableFilial.xhtml"
+				exibirBotaoAdd="true" ocultaNovo="true"
+				funcaoJavaScript="filialDialog.hide(),addFilialSelecionadoEntidade('#{objeto.json}')">
+			</util:pesquisa>
+		</p:dialog>
+
+
+		<p:dialog widgetVar="bairroDialog" id="bairroDialog" width="1000"
+			modal="true" resizable="false" height="400"
+			header="Consulta de bairro" appendToBody="false" dynamic="true">
+			<util:pesquisa managedBeanView="#{bairroBeanView}"
+				nomePesquisa="Pesquisa de Bairro"
+				colunasGridDataTableList="/resources/components/colunasDataTableBairro.xhtml"
+				exibirBotaoAdd="true" ocultaNovo="true"
+				funcaoJavaScript="bairroDialog.hide(),addBairroSelecionadoEntidade('#{objeto.json}')">
+			</util:pesquisa>
+		</p:dialog>
+
+
+
+		<p:dialog widgetVar="cidadeDialog" id="cidadeDialog" width="1000"
+			modal="true" resizable="false" height="400"
+			header="Consulta de cidade" appendToBody="false" dynamic="true">
+			<util:pesquisa managedBeanView="#{cidadeBeanView}"
+				nomePesquisa="Pesquisa de Cidade"
+				colunasGridDataTableList="/resources/components/colunasDataTableCidade.xhtml"
+				exibirBotaoAdd="true" ocultaNovo="true"
+				funcaoJavaScript="cidadeDialog.hide(),addCidadeSelecionadoEntidade('#{objeto.json}')">
+			</util:pesquisa>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>
+</html>

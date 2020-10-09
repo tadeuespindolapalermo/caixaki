@@ -1,0 +1,3 @@
+http://balusc.blogspot.com.br/2006/06/communication-in-jsf.html
+
+http://www.semeru.com.br/blog/manipulado-de-excecoes-no-javaserver-faces-jsf-2-x/

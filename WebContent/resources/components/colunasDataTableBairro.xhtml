@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+<p:column style="width:100px;">
+	<center> <f:facet name="header">Código</f:facet> <h:outputText
+		value="#{objeto.bai_codigo}" /> </center>
+</p:column>
+<p:column>
+	<center> <f:facet name="header">Descrição</f:facet> <h:outputText
+		value="#{objeto.bai_descricao}" /> </center>
+</p:column>
+
+<sec:ifAnyGranted roles="BAIRRO_EXCLUIR, ADMIN">
+	<p:column style="width:50px;" id="colExcluir">
+		<center> <f:facet name="header">Excluir</f:facet> <c:choose>
+			<c:when test="${isCadastro == false}">
+				<p:commandLink action="#{bairroBeanView.excluir}"
+					id="buttonColunaExcluir" ajax="true" immediate="true"
+					partialSubmit="true" process="@this" update="tableResult"
+					onfocus="addFocoAoCampo('bairro');"
+					onclick="if(!confirm('Confirma a exclusão do bairro : #{objeto.bai_descricao}?')) return false;">
+					<h:graphicImage library="img" name="excluir16.png"
+						styleClass="bordaImagem" />
+					<f:setPropertyActionListener
+						target="#{bairroBeanView.objetoSelecionado}" value="#{objeto}" />
+				</p:commandLink>
+			</c:when>
+			<c:otherwise>
+				<p:commandLink action="#{bairroBeanView.excluir}"
+					id="buttonColunaExcluir" ajax="false" immediate="true"
+					partialSubmit="true" process="@this" update="tableResult"
+					onfocus="addFocoAoCampo('bairro');"
+					onclick="if(!confirm('Confirma a exclusão do bairro : #{objeto.bai_descricao}?')) return false;">
+					<h:graphicImage library="img" name="excluir16.png"
+						styleClass="bordaImagem" />
+					<f:setPropertyActionListener
+						target="#{bairroBeanView.objetoSelecionado}" value="#{objeto}" />
+				</p:commandLink>
+			</c:otherwise>
+		</c:choose> </center>
+	</p:column>
+</sec:ifAnyGranted>
+
+<sec:ifAnyGranted roles="BAIRRO_EDITAR, ADMIN">
+	<p:column style="width:50px;" id="colEditar">
+		<center> <f:facet name="header">Editar</f:facet> <p:commandLink
+			immediate="true" action="#{bairroBeanView.editar}" ajax="true"
+			id="editarEnt" oncomplete="addFocoAoCampo('bairro');">
+			<h:graphicImage library="img" name="editar16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener value="#{objeto}"
+				target="#{bairroBeanView.objetoSelecionado}" />
+		</p:commandLink> </center>
+	</p:column>
+</sec:ifAnyGranted>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:util="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/templatePrincipal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formCadastro" prependId="false">
+		<c:set var="isCadastro" value="true" scope="view"/>
+			<p:panel header="Cadastro de Produto" id="panelCadastro">
+
+				<h:panelGrid id="gridProduto" columns="3">
+					<h:outputLabel for="id" value="Código : " id="labelId" />
+					<p:inputText id="id" styleClass="estiloIdCastro"
+						value="#{produtoBeanView.objetoSelecionado.prd_codigo}"
+						disabled="true" />
+					<h:outputLabel />
+
+					<h:outputLabel for="prodDescricao" id="labelDescricao"
+						value="Descrição * : " />
+					<p:inputText id="prodDescricao"
+						value="#{produtoBeanView.objetoSelecionado.prd_descricao}"
+						required="true" requiredMessage="Informe o campo descrição."
+						maxlength="100" styleClass="estyleInputName" />
+					<p:message for="prodDescricao" />
+
+
+					<h:outputLabel for="prd_comissaofilial" id="labelComissaoFilial"
+						value="Comissão filial * : " />
+					<p:inputText id="prd_comissaofilial"
+						value="#{produtoBeanView.objetoSelecionado.prd_comissaofilial}"
+						required="false"
+						requiredMessage="Informe o campo comissão filial." maxlength="8" >
+						 <f:convertNumber minFractionDigits="2" maxFractionDigits="2"
+								 type = "number" currencyCode="BRL" groupingUsed="true" locale="pt_BR"/> 	
+					</p:inputText>
+					<p:message for="prd_comissaofilial" id="msgprd_comissaofilial" />
+
+					<h:outputLabel for="prd_comissaousuario" id="labelComissaoUsuario"
+						value="Comissão Usuário : " />
+					<p:inputText id="prd_comissaousuario"
+						value="#{produtoBeanView.objetoSelecionado.prd_comissaousuario}"
+						required="false"
+						requiredMessage="Informe o campo comissão usuário." maxlength="8" >
+						 <f:convertNumber minFractionDigits="2" maxFractionDigits="2"
+								 type = "number" currencyCode="BRL" groupingUsed="true" locale="pt_BR"/> 
+					</p:inputText>
+					<p:message for="prd_comissaousuario" />
+
+					<h:outputLabel for="prd_comissaodiferefiliial"
+						id="labelDifereFilial" value="Comissão difere filial : " />
+					<p:selectBooleanCheckbox id="prd_comissaodiferefiliial"
+						value="#{produtoBeanView.objetoSelecionado.prd_comissaodiferefiliial}" />
+					<p:message for="prd_comissaodiferefiliial" />
+
+					<h:outputLabel for="prd_comissaodifereusuario"
+						id="labelDifereUsuário" value="Comissão difere usuário : " />
+					<p:selectBooleanCheckbox id="prd_comissaodifereusuario"
+						value="#{produtoBeanView.objetoSelecionado.prd_comissaodifereusuario}" />
+					<p:message for="prd_comissaodifereusuario" />
+
+				</h:panelGrid>
+
+			</p:panel>
+
+			<div class="espacoBranco" />
+
+			<util:botoesCrud managedBeanView="#{produtoBeanView}"
+				camposReload=":formTemplate:msg, tableResult"
+				botaoNovo = "#{contextoBean.possuiAcesso('PRODUTO_NOVO', 'ADMIN')}"
+				botaoSalvar = "#{contextoBean.possuiAcesso('PRODUTO_NOVO', 'ADMIN') and produtoBeanView.objetoSelecionado.prd_codigo == null}"
+				botaoAtualizar = "#{contextoBean.possuiAcesso('PRODUTO_EDITAR', 'ADMIN') and produtoBeanView.objetoSelecionado.prd_codigo != null}"
+				botaoExcluir = "#{contextoBean.possuiAcesso('PRODUTO_EXCLUIR', 'ADMIN')}"/>					
+		</h:form>
+
+		<script type="text/javascript" charset="UTF-8">
+			addFocoAoCampo('prodDescricao');
+			addMascaraDecimalMonetaria('prd_comissaofilial');
+			addMascaraDecimalMonetaria('prd_comissaousuario');
+			gerenciaTeclaEnter();
+		</script>
+
+		<div class="espacoBranco" />
+
+		<p:dataTable id="tableResult" value="#{produtoBeanView.list}" rendered="#{produtoBeanView.list.list.size() > 0}"
+			var="objeto" rows="10" paginatorPosition="bottom" paginator="true"
+			emptyMessage="Não existem valores para exibição." lazy="true"
+			paginatorTemplate=" {FirstPageLink}
+								   {PreviousPageLink} {PageLinks} 
+	 							   {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+			<ui:include src="/resources/components/colunasDataTableProduto.xhtml" />
+
+		</p:dataTable>
+	</ui:define>
+</ui:composition>
+</html>

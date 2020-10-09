@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:util="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/templatePrincipal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formCadastro" prependId="false" >
+		<c:set var="isCadastro" value="true" scope="view"/>
+			<p:panel header="Cadastro de Pais">
+				<h:panelGrid columns="3" id="panelCadastro">
+
+					<h:outputLabel for="id" value="Código : " id="labelId" />
+					<p:inputText id="id" styleClass="estiloIdCastro"
+						value="#{paisBeanView.objetoSelecionado.pai_id}" disabled="true" />
+					<h:outputLabel />
+
+					<h:outputLabel for="pais" value="Pais * : " id="labelPais" />
+					<p:inputText id="pais" maxlength="80"
+						value="#{paisBeanView.objetoSelecionado.pai_nome}" required="true"
+						requiredMessage="Informe o pais." styleClass="estyleInputName" />
+					<p:message for="pais" />
+
+					<h:outputLabel for="sigla" value="Sigla : " id="labelSigla" />
+					<p:inputText id="sigla" maxlength="15"
+						value="#{paisBeanView.objetoSelecionado.pai_sigla}" />
+					<p:message for="sigla" />
+
+				</h:panelGrid>
+			</p:panel>
+
+			<div class="espacoBranco" />
+
+			<util:botoesCrud managedBeanView="#{paisBeanView}"
+				camposReload=":formTemplate:msg, tableResult"
+				botaoNovo = "#{contextoBean.possuiAcesso('PAIS_NOVO', 'ADMIN')}"
+				botaoSalvar = "#{contextoBean.possuiAcesso('PAIS_NOVO', 'ADMIN') and paisBeanView.objetoSelecionado.pai_id == null}"
+				botaoAtualizar = "#{contextoBean.possuiAcesso('PAIS_EDITAR', 'ADMIN') and paisBeanView.objetoSelecionado.pai_id != null}"
+				botaoExcluir = "#{contextoBean.possuiAcesso('PAIS_EXCLUIR', 'ADMIN')}"/>	
+		</h:form>
+		
+		<script type="text/javascript" charset="UTF-8">
+			addFocoAoCampo('pais');
+			gerenciaTeclaEnter();
+		</script>
+		
+		<div class="espacoBranco" />
+
+		<p:dataTable id="tableResult" value="#{paisBeanView.list}" rendered="#{paisBeanView.list.list.size() > 0}"
+			var="objeto" rows="10" paginatorPosition="bottom" paginator="true"
+			emptyMessage="Não existem valores para exibição."
+			lazy="true"
+			paginatorTemplate=" {FirstPageLink}
+								   {PreviousPageLink} {PageLinks} 
+	 							   {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+			<ui:include src="/resources/components/colunasDataTablePais.xhtml" />
+
+		</p:dataTable>
+	</ui:define>
+</ui:composition>
+</html>

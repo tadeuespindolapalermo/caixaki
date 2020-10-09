@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_bairro" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9e8d2be0-927a-447b-953b-00259bee57bf">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="REPORT_PARAMETERS_IMG" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="prd_codigo" class="java.lang.Long">
+		<fieldDescription><![CDATA[prd_codigo]]></fieldDescription>
+	</field>
+	<field name="prd_comissaodiferefiliial" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[prd_comissaodiferefiliial]]></fieldDescription>
+	</field>
+	<field name="prd_comissaodifereusuario" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[prd_comissaodifereusuario]]></fieldDescription>
+	</field>
+	<field name="prd_comissaofilial" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[prd_comissaofilial]]></fieldDescription>
+	</field>
+	<field name="prd_comissaousuario" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[prd_comissaousuario]]></fieldDescription>
+	</field>
+	<field name="prd_descricao" class="java.lang.String">
+		<fieldDescription><![CDATA[prd_descricao]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="84" splitType="Stretch">
+			<image>
+				<reportElement x="510" y="0" width="292" height="68" uuid="9533e838-a612-418d-a6c5-6bdf588bb353"/>
+				<imageExpression><![CDATA[$P{REPORT_PARAMETERS_IMG} + "leaf_banner_violet.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="0" y="0" width="263" height="46" uuid="160911c9-a1e4-4e55-921d-76ada23bb1b3"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Produto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="0" y="46" width="263" height="22" uuid="299b3c6e-019d-4745-b2c7-72af864c8ddd"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Cadastro de produtos]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="20" backcolor="#C3B3B3" uuid="ceacbd42-13be-4567-a007-6d7ef709518e"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="20" uuid="249ae293-b436-428d-957a-b38e8f0b7cd1"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="0" width="75" height="20" uuid="e89856ac-3d3f-4d6f-8d0b-58dc3c1a1c86"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Com. dif. filial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="147" y="0" width="100" height="20" uuid="a75b37e3-58ed-4414-a0b1-467f1072129e"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Com. dif. usuário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="344" y="0" width="89" height="20" uuid="ae5c053e-a2b8-4687-82ea-8a8a002290f0"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Com. usuário]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="433" y="0" width="369" height="20" uuid="333c81e9-22be-411e-8347-cf800594940f"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Descriçao produto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="263" y="0" width="70" height="20" uuid="5c2f93d8-b032-4ac9-832b-d65917ee9c21"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Com. filial]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="21" width="803" height="1" uuid="4c177c02-e80a-4a4d-935f-a343e04b324d"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="1" width="50" height="20" uuid="679c61f9-5b0d-4e05-80be-c2de4096ad5d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{prd_codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="75" height="20" uuid="c18fca96-8693-4de3-b065-1200b452e40a"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{prd_comissaodiferefiliial} ? "Sim" : "Não"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="147" y="0" width="100" height="20" uuid="f4a6b5bf-1912-4f4b-a0d9-b4f1e695ae74"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{prd_comissaodifereusuario} ? "Sim" : "Não"]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="344" y="0" width="89" height="20" uuid="c01a3277-ac38-4dfb-94f8-962702b5b025"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{prd_comissaousuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="433" y="1" width="369" height="20" uuid="ae2bcb4c-26b0-4a2a-bdd1-1e956197e0a5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{prd_descricao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="263" y="1" width="70" height="20" uuid="636bf339-5a71-4024-a1ac-918a9058513e"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{prd_comissaofilial}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="be2df312-6f06-44a2-841d-5c529d5ee42e"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Column header" x="682" y="0" width="80" height="20" uuid="81e974ea-7a9c-44f2-8041-a45698daa8b4"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pg "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="762" y="0" width="40" height="20" uuid="c17accc6-7ed0-425c-8057-1036a44d9fc4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="184" height="20" uuid="326df93b-156a-4ce5-a0a4-d18402c50e56"/>
+				<text><![CDATA[Não existem dados.]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

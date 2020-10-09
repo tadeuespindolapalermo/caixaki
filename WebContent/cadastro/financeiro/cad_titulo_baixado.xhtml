@@ -1,0 +1,441 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:util="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/templatePrincipal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formCadastro" prependId="false">
+			<c:set var="isCadastro" value="true" scope="view" />
+			<c:set var="isBaixa" value="false" scope="view" />
+	
+			<p:panel header="Informações da baixa do título" id="panelCadastro">
+
+				<h:panelGrid id="gridTitulo" columns="3">
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="id" value="Código : " id="labelId" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText id="id" styleClass="estiloIdCastro"
+								value="#{tituloBeanView.objetoSelecionado.tit_codigo}"
+								readonly="true" />
+						</p:row>
+					</p:column>
+
+					<p:column />
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="tit_documento" value="Documento : "
+								id="labelTitulo" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText id="tit_documento" styleClass="estiloIdCastro"
+								required="true" readonly="true"
+								requiredMessage="Informe o campo documento."
+								value="#{tituloBeanView.objetoSelecionado.tit_documento}"
+								maxlength="18" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:message for="tit_documento" />
+						</p:row>
+					</p:column>
+
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="tit_tipo" value="Tipo : " id="labelTipo" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText id="tit_tipo" readonly="true" 
+								value="#{tituloBeanView.objetoSelecionado.tit_tipo.tipo}"
+								required="true" requiredMessage="Informe o campo tipo."/>
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:message for="tit_tipo" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="tit_origem" value="Origem : "
+								id="labelOrigem" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText id="tit_origem"
+								value="#{tituloBeanView.objetoSelecionado.tit_origem.tipo}"
+								readonly="true"
+								required="true" requiredMessage="Informe o campo origem."/>						
+							</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:message for="tit_origem" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="tit_datavencimento" value="Vencimento : "
+								id="labelVencimento" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText value="#{tituloBeanView.objetoSelecionado.tit_datavencimento}"
+							   id="tit_datavencimento">
+								<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy"
+								dateStyle="long" timeStyle="full" timeZone="GMT-03:00"/>
+							</p:inputText>
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:message for="tit_datavencimento" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="tit_datahora" value="Data/hora : "
+								id="labelDataHora" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText
+								value="#{tituloBeanView.objetoSelecionado.tit_datahora}"
+								id="tit_datahora" readonly="true">
+								<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss"
+									dateStyle="long" timeStyle="full" timeZone="GMT-03:00" />
+							</p:inputText>
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:message for="tit_datahora" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="tit_databaixa" value="Data da baixa : "
+								id="labelDataBaixa" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText
+								value="#{tituloBeanView.objetoSelecionado.tit_databaixa}"
+								id="tit_databaixa" readonly="true">
+								<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy"
+									dateStyle="long" timeStyle="full" timeZone="GMT-03:00" />
+							</p:inputText>
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:message for="tit_databaixa" />
+						</p:row>
+					</p:column>
+
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_codigoabertura" value="Usuário origem : "
+								id="labelUserOrigem" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="ent_codigoabertura" styleClass="estiloIdCastro"
+								value="#{tituloBeanView.objetoSelecionado.ent_codigoabertura.ent_codigo}"
+								readonly="true" immediate="true" required="true" />
+							<p:outputLabel style="margin-left: 1px;" />
+							<p:inputText id="loginUserOrigem" readonly="true"
+								immediate="true"
+								value="#{tituloBeanView.objetoSelecionado.ent_codigoabertura.ent_login}"
+								required="true" style="width: 376px;" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="loginUserOrigem" />
+						</p:row>
+					</p:column>
+
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_codigobaixa" value="Usuário baixa : "
+								id="labelUserBaixa" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="ent_codigobaixa" styleClass="estiloIdCastro"
+								value="#{tituloBeanView.objetoSelecionado.ent_codigobaixa.ent_codigo}"
+								readonly="true" immediate="true" required="false" />
+							<p:outputLabel style="margin-left: 1px;" />
+							<p:inputText id="loginUserBaixa" readonly="true"
+								immediate="false"
+								value="#{tituloBeanView.objetoSelecionado.ent_codigobaixa.ent_login}"
+								required="true" style="width: 376px;" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_codigobaixa" />
+						</p:row>
+					</p:column>
+
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="responsavelCodigo" value="Responsável : "
+								id="labelResponsal" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="responsavelCodigo" styleClass="estiloIdCastro"
+								onblur="pesquisarResponsavelPerderFoco(this.value);addResponsavelTitulo(this.value);"
+								value="#{tituloBeanView.objetoSelecionado.ent_codigo.ent_codigo}"
+								immediate="false" required="true" readonly="true"
+								requiredMessage="Informe o responsável pelo título." />
+							<p:inputText id="responsavelNome" readonly="true"
+								immediate="true"
+								value="#{tituloBeanView.objetoSelecionado.ent_codigo.ent_nomefantasia}"
+								required="true"
+								requiredMessage="Informe o responsável pelo título."
+								style="width: 376px;" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="responsavelNome" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="tit_valor" value="Valor R$ : "
+								id="labelValor" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText id="tit_valor" styleClass="estiloIdCastro"
+								value="#{tituloBeanView.objetoSelecionado.tit_valor}"
+								required="true"
+								readonly="true"
+								requiredMessage="Informe o valor do título"
+								maxlength="19">
+								 <f:convertNumber minFractionDigits="4" maxFractionDigits="4"
+								 type = "number" currencyCode="BRL" groupingUsed="true" locale="pt_BR"/>
+							</p:inputText>
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:message for="tit_valor" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="tit_descontobaixa"
+								value="Desconto baixa R$ : " id="labelDescontoBaixa" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText id="tit_descontobaixa" styleClass="estiloIdCastro"
+								value="#{tituloBeanView.objetoSelecionado.tit_descontobaixa}"
+								maxlength="19" readonly="true">
+								 <f:convertNumber minFractionDigits="4" maxFractionDigits="4"
+								 type = "number" currencyCode="BRL" groupingUsed="true" locale="pt_BR"/> 
+							</p:inputText>
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:message for="tit_descontobaixa" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="tit_acrescimobaixa"
+								value="Acréscimo baixa R$ : " id="labelAcrescimoBaixa" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText id="tit_acrescimobaixa" styleClass="estiloIdCastro"
+								value="#{tituloBeanView.objetoSelecionado.tit_acrescimobaixa}"
+								maxlength="19" readonly="true">
+								 <f:convertNumber minFractionDigits="4" maxFractionDigits="4"
+								 type = "number" currencyCode="BRL" groupingUsed="true" locale="pt_BR"/> 
+							</p:inputText>
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:message for="tit_acrescimobaixa" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="tit_valorbaixa" value="Valor baixa R$ : "
+								id="labelValorBaixa" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText id="tit_valorbaixa" styleClass="estiloIdCastro" 
+							   readonly="true" 
+								value="#{tituloBeanView.objetoSelecionado.tit_valorbaixa}"
+								maxlength="19">
+								 <f:convertNumber minFractionDigits="4" maxFractionDigits="4"
+								 type = "number" currencyCode="BRL" groupingUsed="true" locale="pt_BR"/> 
+							</p:inputText>
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:message for="tit_valorbaixa" />
+						</p:row>
+					</p:column>
+
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="tit_observacao" value="Observação : "
+								id="labelObs" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:column>
+								<p:row>
+									<p:inputTextarea id="tit_observacao"
+										style="height:110px;width:502px;" autoResize="true"
+										value="#{tituloBeanView.objetoSelecionado.tit_observacao}"
+										immediate="false" required="false" maxlength="500"
+										readonly="true"
+										requiredMessage="Informe a observação." />
+								</p:row>
+							</p:column>
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="tit_observacao" />
+						</p:row>
+					</p:column>
+
+
+				</h:panelGrid>
+
+			</p:panel>
+
+			<div class="espacoBranco" />
+
+			<p:commandButton value="Consultar"  style="height:40px;width:100px;background:#CDCDC1;border: 1px solid #FFFFFF;"
+				action="#{tituloBeanView.redirecionarFindEntidade}"
+				ajax="false" 
+				id="buttonConsultarBaixaTitulo"
+				immediate="true"> 
+			</p:commandButton>
+		</h:form>
+
+		<script type="text/javascript" charset="UTF-8">
+			addFocoAoCampo('tit_documento');
+			
+			var id = getValorElementPorIdJQuery('tit_descontobaixa');
+			$(id).keypress(naoPermiteEntradaDeDados);
+			
+			id = getValorElementPorIdJQuery('tit_acrescimobaixa');
+			$(id).keypress(naoPermiteEntradaDeDados);
+			
+			id = getValorElementPorIdJQuery('tit_valor');
+			$(id).keypress(naoPermiteEntradaDeDados);
+			
+			id = getValorElementPorIdJQuery('tit_valorbaixa');
+			$(id).keypress(naoPermiteEntradaDeDados);
+			
+		</script>
+
+		<div class="espacoBranco" />
+
+		<p:dataTable id="tableResult" value="#{tituloBeanView.list}"
+			rendered="#{tituloBeanView.list.list.size() > 0}" var="objeto" rows="10"
+			paginatorPosition="bottom" paginator="true"
+			emptyMessage="Não existem valores para exibição." lazy="true"
+			paginatorTemplate=" {FirstPageLink}
+								   {PreviousPageLink} {PageLinks} 
+	 							   {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+			<ui:include src="/resources/components/colunasDataTableTitulo.xhtml" />
+
+		</p:dataTable>
+
+	</ui:define>
+</ui:composition>
+</html>

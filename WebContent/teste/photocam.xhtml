@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:util="http://java.sun.com/jsf/composite/components/util">
+
+
+<ui:composition template="/templates/templatePrincipal.xhtml">
+	<ui:define name="corpo">
+		<h:form>
+			<div>
+				<video id="video" autoplay="true" ></video>
+				<canvas id="canvas" width="450" height="400"></canvas>
+					</div>
+						
+					<div>
+						<p:commandButton id="snap" value="Capturar"/>
+						<p:commandButton id="reset"  value="Excluir"/>
+						<p:commandButton id="upload" value="Salvar"/>
+						<br/>
+						
+						<span id="uploading" style="display: none;"> Salvando . . . </span> 
+								<span id="uploaded" style="display: none;">
+								Sucesso, sua foto foi salva! <a href="javascript:history.go(-1)"> Retornar </a>
+						</span>
+					</div>
+					
+					<script>
+					
+					// Coloque ouvintes de eventos no lugar
+					window.addEventListener("DOMContentLoaded", function() {
+					    //elementos de apoio, criar configurações, etc.
+					    var canvas = document.getElementById("canvas"),
+					        context = canvas.getContext("2d"),
+					        video = document.getElementById("video"),
+					        videoObj = {
+					            "video": true
+					        },
+					        image_format = "jpg",
+					        jpeg_quality = 85,
+					        errBack = function(error) {
+					            alert('Erro: ' + error.code + '\nCamera não encontrada');
+					        };
+					        
+					        
+					    // ouvintes vídeo colocado no lugar
+					    if (navigator.getUserMedia) { // Padrão
+					        navigator.getUserMedia(videoObj, function(stream) {
+					            video.src = stream;
+					            video.play();
+					            $(getValorElementPorIdJQuery("snap")).show();
+					        }, errBack);
+					    } else if (navigator.webkitGetUserMedia) { // WebKit-prefixed
+					        navigator.webkitGetUserMedia(videoObj, function(stream) {
+					            video.src = window.webkitURL.createObjectURL(stream);
+					            video.play();
+					            $(getValorElementPorIdJQuery("snap")).show();
+					        }, errBack);
+					    } else if (navigator.mozGetUserMedia) { // moz-prefixed
+					        navigator.mozGetUserMedia(videoObj, function(stream) {
+					            video.src = window.URL.createObjectURL(stream);
+					            video.play();
+					            $(getValorElementPorIdJQuery("snap")).show();
+					        }, errBack);
+					    }
+
+					    // Obter-Save Snapshot - imagem
+					    $(getValorElementPorIdJQuery("snap")).click(function() {
+					        context.drawImage(video, 0, 0, 450, 400);
+					        // o fade só funciona no Firefox?
+					        $("#video").fadeOut("slow");
+					        $("#canvas").fadeIn("slow");
+					        $(getValorElementPorIdJQuery("snap")).hide();
+					        $(getValorElementPorIdJQuery("reset")).show();
+					        $(getValorElementPorIdJQuery("upload")).show();
+					    });
+					    
+					    // redefinir - claro - para capturar novo Photo
+					     $(getValorElementPorIdJQuery("reset")).click(function() {
+					        $("#canvas").show();
+					        $("#video").fadeIn("slow");
+					        $("#canvas").fadeOut("slow");
+					        $(getValorElementPorIdJQuery("snap")).show();
+					        $(getValorElementPorIdJQuery("reset")).hide();
+					        $(getValorElementPorIdJQuery("upload")).hide();
+					    });
+					    
+					    // Upload da imagem para o servidor
+					      $(getValorElementPorIdJQuery("upload")).click(function() {
+					            var dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+					            $("#uploading").show();
+					            $.ajax({
+					                type: "POST",
+					                url: "uploadPhotoWebCam",
+					                /*url para salvar*/
+					                data: {
+					                    imgBase64: dataUrl,
+					                    user: "Joe",/*parametros*/
+					                    userid: 25
+					                }
+					            }).done(function(msg) {
+					                $("#uploading").hide();
+					                $("#uploaded").show();
+					            });
+					        });
+					}, false);	
+					
+					$("#canvas").hide();
+					
+				</script>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

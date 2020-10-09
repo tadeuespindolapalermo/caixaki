@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx = "http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+	http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+	default-lazy-init="true">
+
+	<context:annotation-config />
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+	
+	<mvc:resources location="/resources/img" mapping="/resources/**" cache-period="5000" />
+
+	<!-- Não pode ser adicionado qualquer pacote -->
+	<context:component-scan base-package="br.com.project.geral.controller" />
+	<context:component-scan base-package="br.com.srv.interfaces" />
+	<context:component-scan base-package="br.com.srv.implementacao" />
+	<context:component-scan base-package="br.com.repository.interfaces" />
+	<context:component-scan base-package="br.com.dao.implementacao" />
+	<context:component-scan base-package="br.com.project.bean.view" />
+	<context:component-scan base-package="br.com.project.bean.geral" />
+	<context:component-scan base-package="br.com.project.report.util" />
+	<context:component-scan base-package="br.com.project.util.all" />
+	<context:component-scan base-package="br.com.project.bean.view.grafico"/>
+	<context:component-scan base-package="br.com.framework.controller.crud"/>
+	<context:component-scan base-package="br.com.framework.interfac.crud"/>
+
+	<!-- Inicializa a indentificação de ambiente de execução -->
+	<bean id="BeanProperty" class="br.com.project.util.all.BeanProperty" scope="singleton" >
+		<constructor-arg name="springTest" value="false" />
+	</bean>
+
+	<!-- Data Source -->
+	<bean id="springDataSource" name="springDataSource" class="org.springframework.jndi.JndiObjectFactoryBean" lazy-init="false">
+		<property name="jndiName">
+			<value>java:comp/env/jdbc/datasouce</value> 
+		</property>
+	</bean>
+	
+	<bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" lazy-init="false"> 
+    	<property name="dataSource" ref="springDataSource"/> 
+    	<property name="baselineOnMigrate" value="true"/>  
+    	<property name="table" value="version"/> 
+    	<property name="sqlMigrationPrefix" value="v"/> 
+    	<property name="sqlMigrationSeparator" value="_"/>
+    	<property name="encoding" value="ISO-8859-1"/>
+    	<property name="validateOnMigrate" value="false"/>
+	</bean>
+	
+	
+	 <bean id="transactionManager" name="transactionManager"   
+         class="org.springframework.jdbc.datasource.DataSourceTransactionManager" lazy-init="false">
+         <property name="dataSource" ref="springDataSource"/>
+     </bean>  
+     
+     <bean id="jdbcTemplate" name="jdbcTemplate" class="br.com.framework.implementacao.crud.JdbcTemplateImpl" lazy-init="false">
+     	<constructor-arg name="dataSource" ref="springDataSource"/>
+     </bean>
+     
+     <bean id="simpleJdbcTemplate" name="simpleJdbcTemplate" class="br.com.framework.implementacao.crud.SimpleJdbcTemplateImpl" lazy-init="false">
+     	<constructor-arg name="dataSource" ref="springDataSource"/>
+     </bean>
+     
+      <bean id="simpleJdbcInsert" name="simpleJdbcInsert" class="br.com.framework.implementacao.crud.SimpleJdbcInsertImplents" lazy-init="false">
+     	<constructor-arg name="dataSource" ref="springDataSource"/>
+     </bean>
+     
+      <bean id="simpleJdbcClassImpl" name="simpleJdbcClassImpl" class="br.com.framework.implementacao.crud.SimpleJdbcClassImpl" lazy-init="false">
+         <constructor-arg name="dataSource" ref="springDataSource"/>
+     </bean>
+	
+	<!-- Mapeamento caso venha utilizar jsp -->
+	<bean id="urlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" lazy-init="false">
+		<property name="mappings">
+			<props>
+				<prop key="/index.jsp">indexController</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Mapeamento caso venha utilizar jsp -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver" lazy-init="false">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WebContent/" />
+		<property name="suffix" value="*.jsf, *.xhtml, *.html, *.jsp, *.js" />
+
+	</bean>
+
+	<!-- Mapeamento caso venha utilizar jsp -->
+	<bean name="indexController" class="org.springframework.web.servlet.mvc.ParameterizableViewController" lazy-init="false"/>
+
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer" lazy-init="false">
+		<property name="scopes">
+			<map>
+				<entry key="view">
+					<bean class=" br.com.project.bean.geral.ViewScope" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<!-- Bean de contexto application -->
+	<bean id="contextoBean" class=" br.com.project.bean.view.ContextoBean" scope="session" lazy-init="false"/>
+	
+	<bean id="reportUtil" class="br.com.project.report.util.ReportUtil"/>
+
+
+	<bean id="utilFramework" class="br.com.framework.utils.UtilFramework" scope="session"/>
+	
+	<!-- Controler -->
+	<bean id="interfaceCrud" class="br.com.framework.implementacao.crud.ImplementacaoCrud" scope="singleton" lazy-init="false"/>
+	<bean id="controller" class="br.com.framework.controller.crud.Controller"/>
+	<bean  id="sessionController" class="br.com.project.geral.controller.SessionControllerImpl"/>
+	<bean id="entidadeController" class="br.com.project.geral.controller.EntidadeController" />
+	<bean id="cidadeController" class="br.com.project.geral.controller.CidadeController" />
+	<bean id="bairroController" class="br.com.project.geral.controller.BairroController" />
+	<bean id="filialController" class="br.com.project.geral.controller.FilialController" />
+	<bean id="mensagemController" class="br.com.project.geral.controller.MensagemController" />
+	<bean id="produtoController" class="br.com.project.geral.controller.ProdutoController" />
+	<bean id="serieController" class="br.com.project.geral.controller.SerieController" />
+	<bean id="estadoController" class="br.com.project.geral.controller.EstadoController" />
+	<bean id="paisController" class="br.com.project.geral.controller.PaisController" />
+	<bean id="empreendimentoController" class="br.com.project.geral.controller.EmpreendimentoController" />
+	<bean id="entidadeEntidadeController" class="br.com.project.geral.controller.EntidadeEntidadeController" />
+	<bean id="tituloController" class="br.com.project.geral.controller.TituloController" />
+	<bean id="loginController" class="br.com.project.geral.controller.LoginController" />
+	<bean id="comissaoFuncionarioFilialController" class="br.com.project.geral.controller.ComissaoFuncionarioFilialController" />
+
+
+	<!-- Repository -->
+	<bean id="repositoryEntidade" class="br.com.dao.implementacao.DaoEntidade" />
+	<bean id="repositoryCidade" class="br.com.dao.implementacao.DaoCidade" />
+	<bean id="repositoryBairro" class="br.com.dao.implementacao.DaoBairro" />
+	<bean id="repositoryFilial" class="br.com.dao.implementacao.DaoFilial" />
+	<bean id="repositoryMensagem" class="br.com.dao.implementacao.DaoMensagem" />
+	<bean id="repositoryProduto" class="br.com.dao.implementacao.DaoProduto" />
+	<bean id="repositorySerie" class="br.com.dao.implementacao.DaoSerie" />
+	<bean id="repositoryEmpreendimento" class="br.com.dao.implementacao.DaoEmpreendimento" />
+	<bean id="repositoryEntidadeEntidade" class="br.com.dao.implementacao.DaoEntidadeEntidade" />
+	<bean id="repositoryTitulo" class="br.com.dao.implementacao.DaoTitulo" />
+	<bean id="repositoryLogin" class="br.com.dao.implementacao.DaoLogin" />
+	<bean id="repositoryComissaoFuncionarioFilial" class="br.com.dao.implementacao.DaoComissaoFuncionarioFilial" />
+
+
+	<!-- Services -->
+	<bean id="srvEntidade" class="br.com.srv.implementacao.SrvEntidadeImpl" /> 
+	<bean id="srvCidade" class="br.com.srv.implementacao.SrvCidadeImpl" />
+	<bean id="srvBairro" class="br.com.srv.implementacao.SrvBairroImpl" />
+	<bean id="srvFilial" class="br.com.srv.implementacao.SrvFilialImpl" />
+	<bean id="srvMensagem" class="br.com.srv.implementacao.SrvMensagemImpl" />
+	<bean id="srvProduto" class="br.com.srv.implementacao.SrvProdutoImpl" />
+	<bean id="srvSerie" class="br.com.srv.implementacao.SrvSerieImpl" />
+	<bean id="srvEmpreendimento" class="br.com.srv.implementacao.SrvEmpreendimentoImpl" />
+	<bean id="srvEntidadeEntidade" class="br.com.srv.implementacao.SrvEntidadeEntidadeImpl" />
+	<bean id="srvTitulo" class="br.com.srv.implementacao.SrvTituloImpl" />
+	<bean id="srvLogin" class="br.com.srv.implementacao.SrvLoginImpl" />
+	<bean id="srvComissaoFuncionarioFilial" class="br.com.srv.implementacao.SrvComissaoFuncionarioFilialImpl" />
+	<bean id="srvImpressaoApplet" class="br.com.srv.implementacao.SrvImpressaoAppletImpl" />
+
+	<bean id="sendEmailController"  class="br.com.project.geral.controller.SendEmailController" />
+	<bean id="repositorySendEmail" class="br.com.dao.implementacao.DaoSendEmail" />
+	<bean id="srvSendEmail" class="br.com.srv.implementacao.SrvSendEmailImpl" />
+	
+
+</beans>
+

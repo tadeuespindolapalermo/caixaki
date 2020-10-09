@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:util="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/templatePrincipal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formCadastro" prependId="false" >
+		<c:set var="isCadastro" value="true" scope="view"/>
+			<p:panel header="Cadastro de Estado" id="panelCadastro">
+				<h:panelGrid id="gridEstado" columns="3">
+					<h:outputLabel for="id" value="Código : " id="labelId" />
+					<p:inputText id="id" styleClass="estiloIdCastro"
+						value="#{estadoBeanView.objetoSelecionado.est_id}" disabled="true" />
+					<h:outputLabel />
+
+					<h:outputLabel for="estado" id="labelEstado" value="Nome * : " />
+					<p:inputText id="estado"
+						value="#{estadoBeanView.objetoSelecionado.est_nome}"
+						required="true" requiredMessage="Informe o campo nome."
+						maxlength="100" styleClass="estyleInputName" />
+					<p:message for="estado" />
+
+					<h:outputLabel for="estadoSigla" id="labelEstadoSigla"
+						value="Sigla : " />
+					<p:inputText id="estadoSigla"
+						value="#{estadoBeanView.objetoSelecionado.est_uf}"
+						requiredMessage="Informe o campo sigla" maxlength="10"
+						styleClass="estyleInputName" />
+					<p:message for="estadoSigla" />
+				  
+				   <sec:ifAnyGranted roles="OCULTA_ITEM">
+						<h:outputLabel for="pais" id="labelPais" value="Pais * :" />
+						<p:selectOneMenu id="pais" required="true" style="width:200px;"
+							requiredMessage="Informe o pais."
+							value="#{estadoBeanView.objetoSelecionado.pais}">
+							<f:selectItems value="#{paisBeanView.paises}" var="p" itemLabel="#{p.pai_nome}"/>
+						</p:selectOneMenu>
+						<p:message for="pais" />
+					</sec:ifAnyGranted>
+				</h:panelGrid>
+			</p:panel>
+
+			<div class="espacoBranco" />
+
+			<util:botoesCrud managedBeanView="#{estadoBeanView}"
+				camposReload=":formTemplate:msg, tableResult" 
+				botaoNovo = "#{contextoBean.possuiAcesso('ESTADO_NOVO', 'ADMIN')}"
+				botaoSalvar = "#{contextoBean.possuiAcesso('ESTADO_NOVO', 'ADMIN') and estadoBeanView.objetoSelecionado.est_id == null}"
+				botaoAtualizar = "#{contextoBean.possuiAcesso('ESTADO_EDITAR', 'ADMIN') and estadoBeanView.objetoSelecionado.est_id != null}"
+				botaoExcluir = "#{contextoBean.possuiAcesso('ESTADO_EXCLUIR', 'ADMIN')}"/>
+		</h:form>
+		
+		<script type="text/javascript" charset="UTF-8">
+			addFocoAoCampo('estado');
+			gerenciaTeclaEnter();
+		</script>
+		
+		<div class="espacoBranco" />
+
+		<p:dataTable id="tableResult" value="#{estadoBeanView.list}" rendered="#{estadoBeanView.list.list.size() > 0}"
+			var="objeto" rows="10" paginatorPosition="bottom" paginator="true"
+			emptyMessage="Não existem valores para exibição."
+			lazy="true" 
+			paginatorTemplate=" {FirstPageLink}
+								   {PreviousPageLink} {PageLinks} 
+	 							   {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+			<ui:include src="/resources/components/colunasDataTableEstado.xhtml" />
+
+		</p:dataTable>
+	</ui:define>
+</ui:composition>
+</html>

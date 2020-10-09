@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:util="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/templatePrincipal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formCadastro" prependId="false">
+		
+			<c:set var="isCadastro" value="true" scope="view" />
+
+			<p:panel header="Cadastro de Comissão" id="panelCadastro">
+
+				<p:panelGrid id="gridComissao" columns="3">
+					<p:column>
+						<p:row>
+							<h:outputLabel for="id" value="Código : " id="labelId" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText id="id" styleClass="estiloIdCastro"
+								value="#{comissaoFuncionarioBeanView.objetoSelecionado.com_codigo}"
+								disabled="true" />
+						</p:row>
+					</p:column>
+					<p:column /> 
+
+					<p:column>
+						<p:row>
+							<h:outputLabel for="fil_codigo" value="Filial : "
+								id="labelFilial" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="fil_codigo" styleClass="estiloIdCastro"
+								onblur="pesquisarFilialPerderFoco(this.value);addFilialComissao(this.value);"
+								value="#{comissaoFuncionarioBeanView.objetoSelecionado.fil_codigo.fil_codigo}"
+								immediate="false" required="true"
+								requiredMessage="Informe a filial." />
+							<p:commandButton id="buttonPesquisaFilial" icon="imgPesquisa"
+								ajax="true" immediate="false"
+								actionListener="#{filialBeanView.setarVariaveisNulas}"
+								oncomplete="filialDialog.show();"
+								update=":formTemplate:filialDialog" process="@this"
+								styleClass="buttonPesquisa" />
+							<p:inputText id="fil_descricao" readonly="true" immediate="false"
+								value="#{comissaoFuncionarioBeanView.objetoSelecionado.fil_codigo.fil_descricao}"
+								required="true" requiredMessage="Informe o campo filial."
+								style="width: 350px;" /> 
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="fil_codigo" />
+						</p:row>
+					</p:column>
+					
+					
+					<p:column>
+						<p:row>
+							<h:outputLabel for="ent_codigo" value="Funcionário : "
+								id="labelDestino" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:inputText id="ent_codigo" styleClass="estiloIdCastro"
+								onblur="pesquisarFuncionarioComissaoPerdeFoco(this.value);addFuncComissao(this.value);"
+								value="#{comissaoFuncionarioBeanView.objetoSelecionado.ent_codigo.ent_codigo}"
+								immediate="false" required="true"
+								requiredMessage="Informe o funcionário." />
+							<p:commandButton id="buttonPesquisaDestino" icon="imgPesquisa"
+								ajax="true" immediate="false" 
+								actionListener="#{funcionarioBeanView.setarVariaveisNulas}"
+								oncomplete="destinoDialog.show();"
+								update=":formTemplate:destinoDialog"								
+								process="@this" styleClass="buttonPesquisa" />
+							<p:inputText id="loginDestino" readonly="true" immediate="false"
+								value="#{comissaoFuncionarioBeanView.objetoSelecionado.ent_codigo.ent_login}"
+								required="true" requiredMessage="Informe o funcionário."
+								style="width: 350px;" />
+						</p:row>
+					</p:column>
+					<p:column>
+						<p:row>
+							<p:message for="ent_codigo" />
+						</p:row>
+					</p:column>
+
+					
+					<p:column>
+						<p:row>
+							<h:outputLabel for="com_descricao" value="Decrição : " id="labelCom_descricao" />
+						</p:row>
+					</p:column>
+
+					<p:column>
+						<p:row>
+							<p:inputText id="com_descricao" style="width:501px;"
+								value="#{comissaoFuncionarioBeanView.objetoSelecionado.com_descricao}"
+								disabled="false" />
+						</p:row>
+					</p:column>
+					
+					<p:column /> 
+
+				</p:panelGrid>
+
+				<p:fieldset legend="Comissões" id="fieldComssao">
+				  <h:form prependId="false">
+					<p:panelGrid id="gridComissaoValores" columns="4">
+						<p:column> 
+								<h:outputLabel style="width:180px" for="val_valor" value="Valor da comissão : " id="labelValor" />
+						</p:column>
+
+						<p:column id="columValores">
+							<p:row>
+								<p:inputText id="val_valor" style="width:67px;"
+									value="#{comissaoFuncionarioBeanView.valorComissaoAddExluir.val_valor}" 
+									disabled="false" maxlength="8">
+									<f:convertNumber minFractionDigits="4" maxFractionDigits="4"
+										type="number" currencyCode="BRL" groupingUsed="true"
+										locale="pt_BR" />
+								</p:inputText>
+								
+								<p:selectOneMenu id="calculo"  style="width:50px;top:7px;" 
+										value="#{comissaoFuncionarioBeanView.valorComissaoAddExluir.val_calculo}">
+										<f:selectItem itemValue="R$" itemLabel="R$"/>
+										<f:selectItem itemValue="%" itemLabel="%"/>
+								</p:selectOneMenu> 
+								
+									<h:outputLabel style="margin-left:20px;" for="tipo"
+									value="Tipo : " id="tipoLabel" />
+
+								<p:selectOneMenu id="tipoOpcoes" style="width:100px;top:7px;"
+								value="#{comissaoFuncionarioBeanView.valorComissaoAddExluir.val_tipo}">
+									<f:selectItem itemValue="PADRAO" itemLabel="Padrão" />
+								</p:selectOneMenu>
+
+								<h:outputLabel style="margin-left:20px;" for="val_descricao"
+									value="Obs : " id="labelDscricao" />
+
+								<p:inputText id="val_descricao" style="width:300px;" required="false"
+									value="#{comissaoFuncionarioBeanView.valorComissaoAddExluir.val_descricao}" />
+
+
+								<p:commandButton id="buttonAddComissao" icon="imgAdiciona"
+									action="#{comissaoFuncionarioBeanView.addValor}"  
+									ajax="false" onsuccess="addFocoAoCampo('val_valor');" process="@form"
+									styleClass="buttonAdiciona" update=":formTemplate:formCadastro:tableResultValores" />
+							</p:row>
+						</p:column>
+						<p:column />
+					</p:panelGrid>
+					</h:form>
+					<p:dataTable id="tableResultValores" value="#{comissaoFuncionarioBeanView.objetoSelecionado.valorComissaoFuncionarioFilials}"
+									rendered="#{comissaoFuncionarioBeanView.objetoSelecionado.valorComissaoFuncionarioFilials.size() > 0}"
+									var="objeto" rows="10" paginatorPosition="bottom" paginator="true"
+									lazy="true" emptyMessage="Não existem valores para exibição."
+									paginatorTemplate=" {FirstPageLink}
+								   						{PreviousPageLink} {PageLinks} 
+	 							   					   {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+						<p:column  style="width:100px;">
+							<center>
+								<f:facet name="header">Valor</f:facet>
+								<h:outputLabel value="#{objeto.val_valor}"/>
+							</center>
+						</p:column>
+						
+						<p:column style="width:100px;">
+							<center>
+								<f:facet name="header">Cálculo</f:facet>
+								<h:outputLabel value="#{objeto.val_calculo}"/>
+							</center>
+						</p:column>
+						
+						<p:column style="width:100px;">
+							<center>
+								<f:facet name="header">Tipo</f:facet>
+								<h:outputLabel value="#{objeto.val_tipo}"/>
+							</center>
+						</p:column>
+						
+						<p:column >
+							<center>
+								<f:facet name="header">Obs</f:facet>
+								<h:outputLabel value="#{objeto.val_descricao}"/>
+							</center>
+						</p:column>
+
+						<p:column  style="width:100px;" >
+						<center>
+						  <f:facet name="header">Excluir</f:facet>
+							<p:commandLink action="#{comissaoFuncionarioBeanView.excluirValor}"
+								id="buttonColunaExcluirValor" 
+								ajax="true" immediate="false"  
+								onsuccess="addFocoAoCampo('val_valor');reloadPage();" 
+								update="tableResultValores"> 
+								<h:graphicImage library="img" name="excluir16.png"
+									styleClass="bordaImagem" />
+								<f:setPropertyActionListener
+									target="#{comissaoFuncionarioBeanView.valorComissaoAddExluir}"
+									value="#{objeto}" />
+							</p:commandLink>
+						  </center>
+						</p:column>
+
+					</p:dataTable>
+				</p:fieldset>
+
+			</p:panel>
+
+			<div class="espacoBranco" />
+
+			<util:botoesCrud managedBeanView="#{comissaoFuncionarioBeanView}"
+				camposReload=":formTemplate:msg, tableResult" 
+				botaoNovo = "#{contextoBean.possuiAcesso('COMISSAO_NOVO', 'ADMIN')}"
+				botaoSalvar = "#{contextoBean.possuiAcesso('COMISSAO_NOVO', 'ADMIN') and comissaoFuncionarioBeanView.objetoSelecionado.com_codigo == null}"
+				botaoAtualizar = "#{contextoBean.possuiAcesso('COMISSAO_EDITAR', 'ADMIN') and comissaoFuncionarioBeanView.objetoSelecionado.com_codigo != null}"
+				botaoExcluir = "#{contextoBean.possuiAcesso('COMISSAO_EXCLUIR', 'ADMIN')}"/>
+		</h:form>
+
+		<div class="espacoBranco" />
+
+		<p:dataTable id="tableResult" value="#{comissaoFuncionarioBeanView.list}"
+			rendered="#{comissaoFuncionarioBeanView.list.list.size() > 0}"
+			var="objeto" rows="10" paginatorPosition="bottom" paginator="true"
+			lazy="true" emptyMessage="Não existem valores para exibição."
+			paginatorTemplate=" {FirstPageLink}
+								   {PreviousPageLink} {PageLinks} 
+	 							   {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+			<ui:include
+				src="/resources/components/colunasDataTableComissao.xhtml" />
+
+		</p:dataTable>
+		
+		<script type="text/javascript" charset="UTF-8">
+			//addFocoAoCampo('fil_codigo');
+			var id = getValorElementPorIdJQuery('fil_codigo');
+			$(id).keypress(permitNumber);
+			
+			 id = getValorElementPorIdJQuery('ent_codigo'); 
+			$(id).keypress(permitNumber);
+			
+			addMascaraDecimalMonetaria('val_valor');
+			
+			gerenciaTeclaEnter();
+			
+		</script>  
+		
+		
+		<p:dialog widgetVar="filialDialog" id="filialDialog" width="1000"
+			modal="true" resizable="false" height="400"
+			header="Consulta de filial" appendToBody="false" dynamic="true">
+			<util:pesquisa managedBeanView="#{filialBeanView}"
+				nomePesquisa="Pesquisa de filial"
+				colunasGridDataTableList="/resources/components/colunasDataTableFilial.xhtml"
+				exibirBotaoAdd="true" ocultaNovo="true"
+				funcaoJavaScript="filialDialog.hide(),addFilialSelecionadoComissao('#{objeto.json}')">
+			</util:pesquisa>
+		</p:dialog>
+		
+		
+		<p:dialog widgetVar="destinoDialog" id="destinoDialog" width="1000"
+			modal="true" resizable="false" height="400"
+			header="Consulta funcionário" appendToBody="false" dynamic="true">
+			<util:pesquisa managedBeanView="#{funcionarioBeanView}"
+				nomePesquisa="Pesquisa de usuário"
+				colunasGridDataTableList="/resources/components/colunasDataTableFuncionario.xhtml"
+				exibirBotaoAdd="true" ocultaNovo="true"
+				funcaoJavaScript="destinoDialog.hide(),addFuncSelecionadoComissao('#{objeto.json}')">
+			</util:pesquisa>
+		</p:dialog>
+		
+		
+	</ui:define>
+	
+</ui:composition>
+</html>

@@ -1,0 +1,332 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags">
+<p:column style="width:100px;">
+	<center>
+		<f:facet name="header">Código</f:facet>
+		<h:outputText value="#{objeto.ent_codigo}" />
+	</center>
+</p:column>
+
+<p:column>
+	<center>
+		<f:facet name="header">Nome Fantasia</f:facet>
+		<h:outputText value="#{objeto.ent_nomefantasia}" />
+	</center>
+</p:column>
+
+
+<p:column>
+	<center>
+		<f:facet name="header">Fone</f:facet>
+		<h:outputText value="#{objeto.ent_fone}" />
+	</center>
+</p:column>
+
+
+
+<p:column>
+	<center>
+		<f:facet name="header">Fax</f:facet>
+		<h:outputText value="#{objeto.ent_fax}" />
+	</center>
+</p:column>
+
+
+
+<p:column>
+	<center>
+		<f:facet name="header">E-mail</f:facet>
+		<h:outputText value="#{objeto.ent_email}" />
+	</center>
+</p:column>
+
+
+<p:column>
+	<center>
+		<f:facet name="header">Cidade</f:facet>
+		<h:outputText value="#{objeto.cid_codigo.cid_descricao}" />
+	</center>
+</p:column>
+
+<!-- TIPO_CADASTRO_CONSTRUTORA -->
+<sec:ifAnyGranted roles="CONSTRUTORA_EXCLUIR, ADMIN">	
+<p:column style="width:50px;" rendered="#{entidadeBeanView.objetoSelecionado.ent_tipo.name == 'TIPO_CADASTRO_CONSTRUTORA'}">
+	<center>
+		<f:facet name="header">Excluir</f:facet>
+		
+<c:choose>
+	<c:when test="${isCadastro == false}">
+		<p:commandLink action="#{entidadeBeanView.excluir}" id="buttonColunaExcluir"
+			ajax="true"
+			immediate="true"
+			partialSubmit="true" process="@this"
+			update="tableResult"
+			onfocus="addFocoAoCampo('ent_nomefantasia');"
+			onclick="if(!confirm('Confirma a exclusão da entidade: #{objeto.ent_nomefantasia}?')) return false;">
+			<h:graphicImage library="img" name="excluir16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener target="#{entidadeBeanView.objetoSelecionado}"
+				value="#{objeto}" />
+		</p:commandLink>		
+	</c:when>
+	<c:otherwise>
+		<p:commandLink action="#{entidadeBeanView.excluir}" id="buttonColunaExcluir2"
+			ajax="false"
+			immediate="true"
+			partialSubmit="true" process="@this"
+			update="tableResult"
+			onfocus="addFocoAoCampo('ent_nomefantasia');"
+			onclick="if(!confirm('Confirma a exclusão da entidade: #{objeto.ent_nomefantasia}?')) return false;">
+			<h:graphicImage library="img" name="excluir16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener target="#{entidadeBeanView.objetoSelecionado}"
+				value="#{objeto}" />
+		</p:commandLink>		
+	</c:otherwise>
+</c:choose>		
+</center>
+</p:column>
+</sec:ifAnyGranted>
+
+<sec:ifAnyGranted roles="CONSTRUTORA_EDITAR, ADMIN">	
+<p:column style="width:50px;" rendered="#{entidadeBeanView.objetoSelecionado.ent_tipo.name == 'TIPO_CADASTRO_CONSTRUTORA'}">
+	<center>
+		<f:facet name="header">Editar</f:facet>
+		<p:commandLink immediate="true" action="#{entidadeBeanView.editar}"
+			ajax="true" id="editarEntidade" oncomplete="addFocoAoCampo('ent_nomefantasia');">
+			<h:graphicImage library="img" name="editar16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener value="#{objeto}"
+				target="#{entidadeBeanView.objetoSelecionado}" />
+		</p:commandLink>
+	</center>
+</p:column>
+</sec:ifAnyGranted>
+
+<!-- TIPO_CADASTRO_CLIENTE -->
+<sec:ifAnyGranted roles="CLIENTE_EXCLUIR, ADMIN">	
+<p:column style="width:50px;" rendered="#{entidadeBeanView.objetoSelecionado.ent_tipo.name == 'TIPO_CADASTRO_CLIENTE'}">
+	<center>
+		<f:facet name="header">Excluir</f:facet>
+		
+<c:choose>
+	<c:when test="${isCadastro == false}">
+		<p:commandLink action="#{entidadeBeanView.excluir}" id="buttonColunaExcluir3"
+			ajax="true"
+			immediate="true"
+			partialSubmit="true" process="@this"
+			update="tableResult"
+			onfocus="addFocoAoCampo('ent_nomefantasia');"
+			onclick="if(!confirm('Confirma a exclusão da entidade: #{objeto.ent_nomefantasia}?')) return false;">
+			<h:graphicImage library="img" name="excluir16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener target="#{entidadeBeanView.objetoSelecionado}"
+				value="#{objeto}" />
+		</p:commandLink>		
+	</c:when>
+	<c:otherwise>
+		<p:commandLink action="#{entidadeBeanView.excluir}" id="buttonColunaExcluir4"
+			ajax="false"
+			immediate="true"
+			partialSubmit="true" process="@this"
+			update="tableResult"
+			onfocus="addFocoAoCampo('ent_nomefantasia');"
+			onclick="if(!confirm('Confirma a exclusão da entidade: #{objeto.ent_nomefantasia}?')) return false;">
+			<h:graphicImage library="img" name="excluir16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener target="#{entidadeBeanView.objetoSelecionado}"
+				value="#{objeto}" />
+		</p:commandLink>		
+	</c:otherwise>
+</c:choose>		
+</center>
+</p:column>
+</sec:ifAnyGranted>
+
+<sec:ifAnyGranted roles="CLIENTE_EDITAR, ADMIN">	
+<p:column style="width:50px;" rendered="#{entidadeBeanView.objetoSelecionado.ent_tipo.name == 'TIPO_CADASTRO_CLIENTE'}">
+	<center>
+		<f:facet name="header">Editar</f:facet>
+		<p:commandLink immediate="true" action="#{entidadeBeanView.editar}"
+			ajax="true" id="editarEntidade2" oncomplete="addFocoAoCampo('ent_nomefantasia');">
+			<h:graphicImage library="img" name="editar16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener value="#{objeto}"
+				target="#{entidadeBeanView.objetoSelecionado}" />
+		</p:commandLink>
+	</center>
+</p:column>
+</sec:ifAnyGranted>
+
+<!-- TIPO_CADASTRO_FORNECEDOR -->
+<sec:ifAnyGranted roles="FORNECEDOR_EXCLUIR, ADMIN">	
+<p:column style="width:50px;" rendered="#{entidadeBeanView.objetoSelecionado.ent_tipo.name == 'TIPO_CADASTRO_FORNECEDOR'}">
+	<center>
+		<f:facet name="header">Excluir</f:facet>
+		
+<c:choose>
+	<c:when test="${isCadastro == false}">
+		<p:commandLink action="#{entidadeBeanView.excluir}" id="buttonColunaExcluir5"
+			ajax="true"
+			immediate="true"
+			partialSubmit="true" process="@this"
+			update="tableResult"
+			onfocus="addFocoAoCampo('ent_nomefantasia');"
+			onclick="if(!confirm('Confirma a exclusão da entidade: #{objeto.ent_nomefantasia}?')) return false;">
+			<h:graphicImage library="img" name="excluir16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener target="#{entidadeBeanView.objetoSelecionado}"
+				value="#{objeto}" />
+		</p:commandLink>		
+	</c:when>
+	<c:otherwise>
+		<p:commandLink action="#{entidadeBeanView.excluir}" id="buttonColunaExcluir6"
+			ajax="false"
+			immediate="true"
+			partialSubmit="true" process="@this"
+			update="tableResult"
+			onfocus="addFocoAoCampo('ent_nomefantasia');"
+			onclick="if(!confirm('Confirma a exclusão da entidade: #{objeto.ent_nomefantasia}?')) return false;">
+			<h:graphicImage library="img" name="excluir16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener target="#{entidadeBeanView.objetoSelecionado}"
+				value="#{objeto}" />
+		</p:commandLink>		
+	</c:otherwise>
+</c:choose>		
+</center>
+</p:column>
+</sec:ifAnyGranted>
+
+<sec:ifAnyGranted roles="FORNECEDOR_EDITAR, ADMIN">	
+<p:column style="width:50px;" rendered="#{entidadeBeanView.objetoSelecionado.ent_tipo.name == 'TIPO_CADASTRO_FORNECEDOR'}">
+	<center>
+		<f:facet name="header">Editar</f:facet>
+		<p:commandLink immediate="true" action="#{entidadeBeanView.editar}"
+			ajax="true" id="editarEntidade3" oncomplete="addFocoAoCampo('ent_nomefantasia');">
+			<h:graphicImage library="img" name="editar16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener value="#{objeto}"
+				target="#{entidadeBeanView.objetoSelecionado}" />
+		</p:commandLink>
+	</center>
+</p:column>
+</sec:ifAnyGranted>
+
+
+<!-- TIPO_CADASTRO_FUNCIONARIO -->
+<sec:ifAnyGranted roles="FUNCIONARIO_EXCLUIR, ADMIN">	
+<p:column style="width:50px;" rendered="#{entidadeBeanView.objetoSelecionado.ent_tipo.name == 'TIPO_CADASTRO_FUNCIONARIO'}">
+	<center>
+		<f:facet name="header">Excluir</f:facet>
+		
+<c:choose>
+	<c:when test="${isCadastro == false}">
+		<p:commandLink action="#{entidadeBeanView.excluir}" id="buttonColunaExcluir7"
+			ajax="true"
+			immediate="true"
+			partialSubmit="true" process="@this"
+			update="tableResult"
+			onfocus="addFocoAoCampo('ent_nomefantasia');"
+			onclick="if(!confirm('Confirma a exclusão da entidade: #{objeto.ent_nomefantasia}?')) return false;">
+			<h:graphicImage library="img" name="excluir16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener target="#{entidadeBeanView.objetoSelecionado}"
+				value="#{objeto}" />
+		</p:commandLink>		
+	</c:when>
+	<c:otherwise>
+		<p:commandLink action="#{entidadeBeanView.excluir}" id="buttonColunaExcluir8"
+			ajax="false"
+			immediate="true"
+			partialSubmit="true" process="@this"
+			update="tableResult"
+			onfocus="addFocoAoCampo('ent_nomefantasia');"
+			onclick="if(!confirm('Confirma a exclusão da entidade: #{objeto.ent_nomefantasia}?')) return false;">
+			<h:graphicImage library="img" name="excluir16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener target="#{entidadeBeanView.objetoSelecionado}"
+				value="#{objeto}" />
+		</p:commandLink>		
+	</c:otherwise>
+</c:choose>		
+</center>
+</p:column>
+</sec:ifAnyGranted>
+
+<sec:ifAnyGranted roles="FUNCIONARIO_EDITAR, ADMIN">	
+<p:column style="width:50px;" rendered="#{entidadeBeanView.objetoSelecionado.ent_tipo.name == 'TIPO_CADASTRO_FUNCIONARIO'}">
+	<center>
+		<f:facet name="header">Editar</f:facet>
+		<p:commandLink immediate="true" action="#{entidadeBeanView.editar}"
+			ajax="true" id="editarEntidade4" oncomplete="addFocoAoCampo('ent_nomefantasia');">
+			<h:graphicImage library="img" name="editar16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener value="#{objeto}"
+				target="#{entidadeBeanView.objetoSelecionado}" />
+		</p:commandLink>
+	</center>
+</p:column>
+</sec:ifAnyGranted>
+
+<!-- TIPO_CADASTRO_VENDEDOR -->
+<sec:ifAnyGranted roles="VENDEDOR_EXCLUIR, ADMIN">	
+<p:column style="width:50px;" rendered="#{entidadeBeanView.objetoSelecionado.ent_tipo.name == 'TIPO_CADASTRO_VENDEDOR'}">
+	<center>
+		<f:facet name="header">Excluir</f:facet>
+		
+<c:choose>
+	<c:when test="${isCadastro == false}">
+		<p:commandLink action="#{entidadeBeanView.excluir}" id="buttonColunaExcluir9"
+			ajax="true"
+			immediate="true"
+			partialSubmit="true" process="@this"
+			update="tableResult"
+			onfocus="addFocoAoCampo('ent_nomefantasia');"
+			onclick="if(!confirm('Confirma a exclusão da entidade: #{objeto.ent_nomefantasia}?')) return false;">
+			<h:graphicImage library="img" name="excluir16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener target="#{entidadeBeanView.objetoSelecionado}"
+				value="#{objeto}" />
+		</p:commandLink>		
+	</c:when>
+	<c:otherwise>
+		<p:commandLink action="#{entidadeBeanView.excluir}" id="buttonColunaExcluir10"
+			ajax="false"
+			immediate="true"
+			partialSubmit="true" process="@this"
+			update="tableResult"
+			onfocus="addFocoAoCampo('ent_nomefantasia');"
+			onclick="if(!confirm('Confirma a exclusão da entidade: #{objeto.ent_nomefantasia}?')) return false;">
+			<h:graphicImage library="img" name="excluir16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener target="#{entidadeBeanView.objetoSelecionado}"
+				value="#{objeto}" />
+		</p:commandLink>		
+	</c:otherwise>
+</c:choose>		
+</center>
+</p:column>
+</sec:ifAnyGranted>
+
+<sec:ifAnyGranted roles="VENDEDOR_EDITAR, ADMIN">	
+<p:column style="width:50px;" rendered="#{entidadeBeanView.objetoSelecionado.ent_tipo.name == 'TIPO_CADASTRO_VENDEDOR'}">
+	<center>
+		<f:facet name="header">Editar</f:facet>
+		<p:commandLink immediate="true" action="#{entidadeBeanView.editar}"
+			ajax="true" id="editarEntidade5" oncomplete="addFocoAoCampo('ent_nomefantasia');">
+			<h:graphicImage library="img" name="editar16.png"
+				styleClass="bordaImagem" />
+			<f:setPropertyActionListener value="#{objeto}"
+				target="#{entidadeBeanView.objetoSelecionado}" />
+		</p:commandLink>
+	</center>
+</p:column>
+</sec:ifAnyGranted>
+</html>

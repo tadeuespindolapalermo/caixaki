@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:sec="http://www.springframework.org/security/facelets/tags"
+	xmlns:util="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/templatePrincipal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formCadastro" prependId="false">
+			<c:set var="isCadastro" value="true" scope="view" />
+			<p:panel header="Mensagens recebidas" id="panelMsgRecebida">
+				<h:panelGrid id="gridMsgRecebida" columns="3" style="width:100%;">
+
+					<p:dataTable id="tableResult" value="#{mensagemBeanView.list}"
+						rendered="#{mensagemBeanView.list.list.size() > 0}" var="objeto"
+						rowKey="#{objeto.men_codigo}" rows="6" paginatorPosition="bottom"
+						paginator="true" emptyMessage="Não existem valores para exibição."
+						selectionMode="single" 
+						selection="#{mensagemBeanView.objetoSelecionado}" 
+						lazy="true"
+						paginatorTemplate=" {FirstPageLink}
+								   {PreviousPageLink} {PageLinks} 
+	 							   {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+	 							   
+						<p:ajax event="rowSelect" global="true" listener="#{mensagemBeanView.onRowSelect}" update=":formTemplate:formLserMsg:gridLerMsg"/>
+			       		<p:ajax event="rowUnselect" global="true" listener="#{mensagemBeanView.onRowUnselect}" update=":formTemplate:formLserMsg:gridLerMsg"/>		
+	 							   
+						<p:column style="width:100px;">  
+							<center>
+								<f:facet name="header">Origem</f:facet>
+								<h:outputText value="#{objeto.usr_origem.ent_nomefantasia}" 
+									 	rendered="#{objeto.men_lido}" id="origemSim"/>
+									 	
+								 <h:outputText value="#{objeto.usr_origem.ent_nomefantasia}" id="origemNao"
+								     	style="font-weight: bold" rendered="#{!objeto.men_lido}"/>
+							</center>
+						</p:column>
+						<p:column>
+							<f:facet name="header">Assunto</f:facet>
+							<p:outputLabel value="#{objeto.men_assunto}" rendered="#{objeto.men_lido}"/>
+							<p:outputLabel value="#{objeto.men_assunto}" style="font-weight: bold" rendered="#{!objeto.men_lido}"/>
+						</p:column>
+						<p:column style="width:200px;">
+							<center>
+								<f:facet name="header">Data recebida</f:facet>
+								<h:outputLabel value="#{objeto.men_datahora}" id="dataRecebidaSim" rendered="#{objeto.men_lido}">
+									<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss"
+										dateStyle="long" timeStyle="full" timeZone="GMT-03:00" />
+								</h:outputLabel>
+								
+								<h:outputLabel value="#{objeto.men_datahora}" id="dataRecebidaNao" style="font-weight: bold" rendered="#{!objeto.men_lido}">
+									<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss"
+										dateStyle="long" timeStyle="full" timeZone="GMT-03:00" />
+								</h:outputLabel>
+							</center>
+						</p:column>
+
+						<p:column style="width:200px;">
+							<center>
+								<f:facet name="header">Lida</f:facet>
+								<h:outputLabel value="Sim" id="msgLidaSim" 
+									rendered="#{objeto.men_lido}" />
+
+								<h:outputLabel value="Não" id="msgLidaNao"
+									rendered="#{!objeto.men_lido}"  style="font-weight: bold"/>
+							</center>
+						</p:column>
+
+						<p:column style="width:50px;" id="colLerMsg">
+							<center>
+								<f:facet name="header">Visualizar</f:facet>
+								<p:commandLink immediate="false" onclick="setTimeout(function(){confirmaLeituraMsg(#{objeto.men_codigo});}, 3000);"
+									update=":formTemplate:formLserMsg:gridLerMsg"
+									 ajax="true" id="lerMsg">
+									<h:graphicImage library="img" name="zoom.gif"
+										styleClass="bordaImagem" />
+									<f:setPropertyActionListener value="#{objeto}"
+										target="#{mensagemBeanView.objetoSelecionado}" />
+								</p:commandLink>
+							</center>
+						</p:column>
+
+					</p:dataTable>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+
+		<h:form id="formLserMsg" prependId="false">
+			<h:panelGrid id="gridLerMsg" columns="2">
+				<p:column>
+					<p:row>
+						<h:outputLabel for="origem" value="Origem : " id="labelOrigem" />
+					</p:row>
+				</p:column>
+				<p:column>
+					<p:row>
+						<p:inputText id="origem" readonly="true"
+							value="#{mensagemBeanView.objetoSelecionado.usr_origem.ent_nomefantasia}" />
+					</p:row>
+				</p:column>
+
+				<p:column id="lidonaolido">
+					<p:row>
+						<h:outputLabel for="men_lido" value="Lida : " id="labelLido" />
+					</p:row>
+				</p:column>
+				<p:column>
+					<p:row>
+						<p:selectBooleanCheckbox id="men_lido"
+							onchange="marcarDesmarcarLido('#{mensagemBeanView.objetoSelecionado.men_codigo}','#{request.contextPath}');"
+							value="#{mensagemBeanView.objetoSelecionado.men_lido}" />
+					</p:row>
+				</p:column>
+
+
+				<p:column>
+					<p:row>
+						<h:outputLabel for="men_datahora" value="Data : " id="labelData" />
+					</p:row>
+				</p:column>
+				<p:column>
+					<p:row>
+						
+						<p:inputText readonly="true" 
+						 id="men_datahora_temp" value=""
+						 rendered="#{mensagemBeanView.objetoSelecionado.men_codigo == null}"/>
+					
+						<p:inputText readonly="true" id="men_datahora"
+						 rendered="#{mensagemBeanView.objetoSelecionado.men_codigo != null}"
+						 value="#{mensagemBeanView.objetoSelecionado.men_datahora}">
+							<f:convertDateTime locale="pt_BR" pattern="dd/MM/yyyy HH:mm:ss" 
+								dateStyle="long" timeStyle="full" timeZone="GMT-03:00" />
+						</p:inputText>
+					</p:row>
+				</p:column>
+
+
+				<p:column>
+					<p:row>
+						<h:outputLabel for="men_assunto" value="Assunto : "
+							id="labelAssunto" />
+					</p:row>
+				</p:column>
+				<p:column>
+					<p:row>
+						<p:inputText readonly="true" style="width:502px;" id="men_assunto"
+							value="#{mensagemBeanView.objetoSelecionado.men_assunto}" />
+					</p:row>
+				</p:column>
+				
+			<sec:ifAnyGranted roles="OCULTA_ITEM">	
+				<p:column>
+					<p:row>
+						<h:outputLabel for="men_exigirresposta" value="Exige resposta : " 
+							id="labelExigeResp" />
+					</p:row>
+				</p:column>
+				
+				<p:column>
+					<p:row>
+						<p:inputText value="Sim" readonly="true" id="men_exigirresposta"
+						rendered="#{mensagemBeanView.objetoSelecionado.men_exigirresposta eq true}"/>
+						
+						<p:inputText value="Não" readonly="true" id="men_exigirresposta_nao"
+						rendered="#{mensagemBeanView.objetoSelecionado.men_exigirresposta eq false}"/>
+						
+						<p:inputText value="" readonly="true" id="men_exigirresposta_null"
+						rendered="#{mensagemBeanView.objetoSelecionado.men_exigirresposta eq null}"/>
+						 
+						<p:commandButton value="Responder" ajax="true"
+						style="margin-left: 2px;"
+						onclick="responderMsg('#{request.contextPath}','#{mensagemBeanView.objetoSelecionado.usr_origem.ent_codigo}');"
+						rendered="#{mensagemBeanView.objetoSelecionado.men_exigirresposta eq true}"/>
+						
+					</p:row>
+				</p:column>
+			</sec:ifAnyGranted>	
+
+				<p:column>
+					<p:row>
+						<h:outputLabel for="men_mensagem" value="Mensagem : "
+							id="labelMsg" />
+					</p:row>
+				</p:column>
+
+				<p:column>
+					<p:row>
+						<p:column>
+							<p:row>
+								<p:inputTextarea id="men_mensagem" 
+									style="height:190px;width:502px;" autoResize="false" 
+									value="#{mensagemBeanView.objetoSelecionado.men_mensagem}"
+									readonly="true" />
+							</p:row>
+						</p:column>
+					</p:row>
+				</p:column>
+
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

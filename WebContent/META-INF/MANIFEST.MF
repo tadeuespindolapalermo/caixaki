@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Permissions: all-permissions
+Application-Name: Caixaki
+Specification-Title: Alex Desenvolvimento de Software Ltda
+Specification-Vendor: Alex Desenvolvimento de Software Ltda
+Implementation-Vendor: Alex Desenvolvimento de Software Ltda
+Codebase: * 
+Trusted-Library: true
+Trusted-Only: true
+Application-Library-Allowable-Codebase: *
+Caller-Allowable-Codebase: *
